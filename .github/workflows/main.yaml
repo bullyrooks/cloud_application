@@ -58,6 +58,8 @@ jobs:
           push: true
           tags: |
             cloud.canister.io:5000/bullyrooks/cloud_application:${{ env.VERSION }}
+          cache-from: type=registry,ref=cloud.canister.io:5000/bullyrooks/cloud_application:buildcache
+          cache-to: type=inline
 
       - name: Publish Helm chart
         uses: stefanprodan/helm-gh-pages@master
