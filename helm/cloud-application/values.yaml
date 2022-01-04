@@ -40,6 +40,9 @@ service:
   port: 8080
   targetPort: 8080
 
+port:
+  containerPort: 8080
+
 ingress:
   enabled: false
   className: ""
