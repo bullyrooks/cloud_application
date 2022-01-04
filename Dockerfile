@@ -1,22 +1,14 @@
-FROM maven:3.8.1-openjdk-11 as build
-# Create the workspace
-ENV HOME=/home/usr/app
-RUN mkdir -p $HOME
-WORKDIR $HOME
+# syntax=docker/dockerfile:experimental
+FROM openjdk:11-slim-buster as build
 
-# add pom.xml
-ADD pom.xml $HOME
-
-# download dependencies
-RUN mvn dependency:go-offline
-
-# add all source code and start compiling
-ADD . $HOME
+COPY .mvn .mvn
+COPY mvnw .
+COPY pom.xml .
+COPY src src
 
 # Setup the maven cache
-RUN --mount=type=cache,target=/root/.m2 mvn -f $HOME/pom.xml --batch-mode package -DskipTests
+RUN --mount=type=cache,target=/root/.m2,rw ./mvnw -B package -DskipTests
 
-FROM openjdk:11.0.12
-RUN mkdir /opt/app
-COPY --from=build /home/usr/app/target/*.jar /opt/app/app.jar
-ENTRYPOINT ["java", "-jar", "/opt/app/app.jar"]
+FROM openjdk:11-jre-slim-buster
+COPY --from=build target/*.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
