@@ -21,9 +21,7 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: |
-          chmod +x ./mvnw
-          ./mvnw -B test
+        run: ./mvnw -B test
 
       - name: Bump version
         run: |
