@@ -73,3 +73,12 @@ jobs:
           branch: gh-charts
           app_version: ${{ env.VERSION }}
           chart_version: ${{ env.VERSION }}
+
+      - name: Deploy
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: |
+            helm repo add bullyrooks https://bullyrooks.github.io/helm-charts/
+            helm repo update
+            helm upgrade cloud-application bullyrooks/cloud-application --install --atomic
+          kubeconfig: '${{ secrets.KUBECONFIG }}'
