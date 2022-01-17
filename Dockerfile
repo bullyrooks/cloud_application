@@ -6,7 +6,7 @@ COPY mvnw .
 COPY pom.xml .
 
 # download dependencies
-RUN mvn dependency:go-offline
+RUN ./mvnw dependency:go-offline
 
 COPY src src
 
