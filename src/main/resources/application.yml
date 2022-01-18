@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: cloud_application
+  data:
+    mongodb:
+      uri: mongodb+srv://bullyrooks:${mongodb.password}@bullyrooks.4zqpz.mongodb.net/bullyrooks?retryWrites=true&w=majority
