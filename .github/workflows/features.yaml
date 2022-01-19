@@ -37,7 +37,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: cloud.canister.io:5000/bullyrooks/cloud_application
+          images: cloud.canister.io:5000/bullyrooks/cloud-application
 
       - name: Cache Docker layers
         uses: actions/cache@v2
