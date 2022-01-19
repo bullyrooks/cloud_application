@@ -4,6 +4,10 @@ FROM openjdk:11-slim-buster as build
 COPY .mvn .mvn
 COPY mvnw .
 COPY pom.xml .
+
+# download dependencies
+RUN ./mvnw dependency:go-offline
+
 COPY src src
 
 # Setup the maven cache
