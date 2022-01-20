@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: cloud.canister.io:5000/bullyrooks/cloud_application
+  repository: cloud.canister.io:5000/bullyrooks/cloud-application
   pullPolicy: Always
 
 imagePullSecrets:
