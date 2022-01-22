@@ -37,6 +37,12 @@ spec:
             - name: http
               containerPort: {{ .Values.port.containerPort }}
               protocol: TCP
+          env:
+          - name: SPRING_DATA_MONGODB_URI
+            valueFrom:
+              secretKeyRef:
+                name: mongo-secrets
+                key: SPRING_DATA_MONGODB_URI
 {{/*          livenessProbe:*/}}
 {{/*            httpGet:*/}}
 {{/*              path: /*/}}
