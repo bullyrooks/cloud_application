@@ -1,0 +1,13 @@
+@startuml
+'https://plantuml.com/component-diagram
+node "Build Server" as build {
+ Package "Test Suite" as test
+ [Microservice] as ms
+ database "<TestContainer> MongoDB" as tc
+
+ test <--> ms
+ ms --> tc
+}
+
+
+@enduml

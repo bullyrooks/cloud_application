@@ -2,17 +2,21 @@ package com.bullyrooks.cloud_application.controller;
 
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageRequestDTO;
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageResponseDTO;
+import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorClient;
+import com.bullyrooks.cloud_application.message_generator.client.dto.MessageResponseDTO;
 import com.bullyrooks.cloud_application.repository.MessageRepository;
 import com.bullyrooks.cloud_application.repository.document.MessageDocument;
 import com.github.javafaker.Faker;
 import com.github.javafaker.service.FakeValuesService;
 import com.github.javafaker.service.RandomService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -32,7 +36,9 @@ import org.testcontainers.containers.MongoDBContainer;
 import java.util.List;
 import java.util.Locale;
 
+import static com.mongodb.internal.connection.tlschannel.util.Util.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -57,6 +63,8 @@ public class MessageControllerTest {
 
     @Autowired
     MessageRepository messageRepository;
+    @MockBean
+    MessageGeneratorClient messageGeneratorClient;
 
     FakeValuesService fakesvc = new FakeValuesService(
             new Locale("en-US"), new RandomService());
@@ -64,7 +72,7 @@ public class MessageControllerTest {
 
 
     @Test
-    void testGetOpportunitiesForNotification(){
+    void testSaveMessage(){
         Long userId = 1l;
 
         //given
@@ -94,6 +102,42 @@ public class MessageControllerTest {
         assertEquals(request.getFirstName(), savedDoc.getFirstName());
         assertEquals(request.getLastName(), savedDoc.getLastName());
         assertEquals(request.getMessage(), savedDoc.getMessage());
+    }
+    @Test
+    void testGetReturnsMessageIfMissing(){
+        Long userId = 1l;
+
+        //given
+        CreateMessageRequestDTO request = CreateMessageRequestDTO
+                .builder()
+                .firstName(faker.name().firstName())
+                .lastName(faker.name().lastName())
+                .build();
+
+        when(messageGeneratorClient.getMessage()).thenReturn(
+                MessageResponseDTO.builder()
+                .message(faker.gameOfThrones().quote())
+                .build());
+
+        //when
+        RestTemplate restTemplate = new RestTemplate();
+        String baseUrl = "http://localhost:" + randomServerPort + MESSAGE_PATH;
+        UriComponents builder = UriComponentsBuilder.fromHttpUrl(baseUrl)
+                .build();
+
+        ResponseEntity<CreateMessageResponseDTO> result = restTemplate.postForEntity(
+                builder.toUri(), request, CreateMessageResponseDTO.class);
+
+        //then
+        CreateMessageResponseDTO dto = result.getBody();
+        assertEquals(request.getFirstName(), dto.getFirstName());
+        assertEquals(request.getLastName(), dto.getLastName());
+        assertTrue(StringUtils.isNotBlank(dto.getMessage()));
+
+        MessageDocument savedDoc = messageRepository.findById(dto.getMessageId()).get();
+        assertEquals(request.getFirstName(), savedDoc.getFirstName());
+        assertEquals(request.getLastName(), savedDoc.getLastName());
+        assertEquals(dto.getMessage(), savedDoc.getMessage());
     }
 
 }
