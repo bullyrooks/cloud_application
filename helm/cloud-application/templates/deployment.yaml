@@ -43,14 +43,16 @@ spec:
               secretKeyRef:
                 name: mongo-secrets
                 key: SPRING_DATA_MONGODB_URI
-{{/*          livenessProbe:*/}}
-{{/*            httpGet:*/}}
-{{/*              path: /*/}}
-{{/*              port: http*/}}
-{{/*          readinessProbe:*/}}
-{{/*            httpGet:*/}}
-{{/*              path: /*/}}
-{{/*              port: http*/}}
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 15
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

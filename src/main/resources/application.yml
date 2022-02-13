@@ -1,6 +1,21 @@
 spring:
   application:
-    name: cloud_application
+    name: cloud-application
   data:
     mongodb:
       uri: mongodb+srv://bullyrooks:${mongodb.password}@bullyrooks.4zqpz.mongodb.net/bullyrooks?retryWrites=true&w=majority
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: always
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true

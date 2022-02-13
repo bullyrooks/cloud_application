@@ -72,7 +72,7 @@ public class MessageControllerTest {
 
 
     @Test
-    void testSaveMessage(){
+    void testSaveMessageUpd(){
         Long userId = 1l;
 
         //given
