@@ -22,3 +22,9 @@ management:
       enabled: true
     readinessstate:
       enabled: true
+feign:
+  client:
+    config:
+      healthClient:
+        connectTimeout: 1000
+        readTimeout: 1000
