@@ -23,11 +23,11 @@ public class MessageGeneratorHealth implements HealthIndicator {
             ResponseEntity<HealthCheckDTO> healthCheckDTO = messageClient.getHealth();
             log.info("health check response: {}\n{}", healthCheckDTO.getStatusCode(), healthCheckDTO.getBody());
             if (!StringUtils.equals("UP", healthCheckDTO.getBody().getStatus())) {
-                status = Health.down();
+                status = Health.outOfService();
             }
         }catch (Exception e){
             log.error("error trying to get message generator health: {}", e.getMessage(),e);
-            status = Health.down();
+            status = Health.outOfService();
         }
         return status.build();
     }
