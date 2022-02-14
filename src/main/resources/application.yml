@@ -16,13 +16,8 @@ management:
       show-details: always
       group:
         readiness:
-          include: mongo,messageGenerator
+          include: "readinessState,mongo,messageGenerator"
 
-#  health:
-#    livenessstate:
-#      enabled: true
-#    readinessstate:
-#      enabled: true
 feign:
   client:
     config:
