@@ -99,5 +99,5 @@ jobs:
             echo "helm upgrade message-generator bullyrooks/message-generator --install --version ${{ env.VERSION }}"
             sleep 60s
             helm repo update
-            helm upgrade cloud-application bullyrooks/cloud-application --install
+            helm upgrade cloud-application bullyrooks/cloud-application --install --version ${{ env.VERSION }}
           kubeconfig: '${{ secrets.KUBECONFIG }}'

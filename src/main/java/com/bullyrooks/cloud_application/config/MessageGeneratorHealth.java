@@ -1,6 +1,5 @@
 package com.bullyrooks.cloud_application.config;
 
-import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorClient;
 import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorHealthClient;
 import com.bullyrooks.cloud_application.message_generator.client.dto.HealthCheckDTO;
 import lombok.extern.slf4j.Slf4j;
