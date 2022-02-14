@@ -16,10 +16,7 @@ management:
       show-details: always
       group:
         readiness:
-          include: mongo,messageGeneratorHealth
-          show-details: always
-          status:
-            order: down,out-of-service,unknown,up
+          include: mongo,messageGenerator
 
 #  health:
 #    livenessstate:
