@@ -17,11 +17,11 @@ management:
       group:
         readiness:
           include: readinessState,mongo,messageGeneratorHealth
-  health:
-    livenessstate:
-      enabled: true
-    readinessstate:
-      enabled: true
+#  health:
+#    livenessstate:
+#      enabled: true
+#    readinessstate:
+#      enabled: true
 feign:
   client:
     config:
