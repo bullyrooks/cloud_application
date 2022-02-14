@@ -16,7 +16,7 @@ management:
       show-details: always
     group:
       readiness:
-        include: readinessstate,mongo
+        include: readinessstate,mongo,messageGeneratorHealth
   health:
     livenessstate:
       enabled: true
