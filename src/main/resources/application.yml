@@ -14,9 +14,9 @@ management:
       probes:
         enabled: true
       show-details: always
-    group:
-      readiness:
-        include: readinessstate,mongo,messageGeneratorHealth
+      group:
+        readiness:
+          include: readinessstate,mongo,messageGeneratorHealth
   health:
     livenessstate:
       enabled: true
