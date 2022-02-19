@@ -1,5 +1,6 @@
 package com.bullyrooks.cloud_application.controller;
 
+import com.bullyrooks.cloud_application.config.LoggingEnabled;
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageRequestDTO;
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageResponseDTO;
 import com.bullyrooks.cloud_application.controller.dto.HelloWorldResponse;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
+@LoggingEnabled
 public class MessageController {
 
     @Autowired

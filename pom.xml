@@ -18,6 +18,9 @@
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <javafaker.version>1.0.2</javafaker.version>
         <spring-cloud.version>2021.0.0</spring-cloud.version>
+        <logstash-logback-encoder.version>6.4</logstash-logback-encoder.version>
+        <log4j2.version>2.17.1</log4j2.version>
+        <logzio-logback-appender.version>v1.0.25</logzio-logback-appender.version>
     </properties>
     <dependencies>
         <dependency>
@@ -85,6 +88,21 @@
             <artifactId>spring-cloud-starter-kubernetes-fabric8-all</artifactId>
         </dependency>
 
+        <!-- logging -->
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>${logstash-logback-encoder.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.logz.logback</groupId>
+            <artifactId>logzio-logback-appender</artifactId>
+            <version>${logzio-logback-appender.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

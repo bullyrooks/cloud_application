@@ -24,3 +24,8 @@ feign:
       healthClient:
         connectTimeout: 1000
         readTimeout: 1000
+
+logging:
+  level:
+    root: INFO
+    com.bullyrooks: DEBUG

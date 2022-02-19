@@ -1,5 +1,6 @@
 package com.bullyrooks.cloud_application.service;
 
+import com.bullyrooks.cloud_application.config.LoggingEnabled;
 import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorClient;
 import com.bullyrooks.cloud_application.message_generator.client.dto.MessageResponseDTO;
 import com.bullyrooks.cloud_application.repository.MessageRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@LoggingEnabled
 public class MessageService {
 
     @Autowired
