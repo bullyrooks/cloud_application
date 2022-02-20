@@ -2,18 +2,12 @@ package com.bullyrooks.cloud_application.config;
 
 import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorHealthClient;
 import com.bullyrooks.cloud_application.message_generator.client.dto.HealthCheckDTO;
-import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.extension.annotations.WithSpan;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.availability.AvailabilityStateHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.Status;
-import org.springframework.boot.availability.ApplicationAvailability;
-import org.springframework.boot.availability.AvailabilityState;
-import org.springframework.boot.availability.ReadinessState;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
