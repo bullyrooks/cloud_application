@@ -2,6 +2,8 @@ package com.bullyrooks.cloud_application.config;
 
 import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorHealthClient;
 import com.bullyrooks.cloud_application.message_generator.client.dto.HealthCheckDTO;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.extension.annotations.WithSpan;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ public class MessageGeneratorHealthIndicator implements HealthIndicator {
     @Autowired
     MessageGeneratorHealthClient messageClient;
 
+    @WithSpan()
     public Health health() {
         Health.Builder status = Health.up();
         try {

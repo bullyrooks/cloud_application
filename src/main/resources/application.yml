@@ -17,6 +17,8 @@ management:
       group:
         readiness:
           include: "readinessState,mongo,messageGenerator"
+    metrics:
+      enabled: true
 
 feign:
   client:
@@ -29,3 +31,7 @@ logging:
   level:
     root: INFO
     com.bullyrooks: DEBUG
+    io.micrometer.logzio: WARN
+logzio:
+  metrics:
+    url: https://listener.logz.io:8053

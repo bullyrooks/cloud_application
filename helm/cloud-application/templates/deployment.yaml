@@ -47,6 +47,16 @@ spec:
               secretKeyRef:
                 name: mongo-secrets
                 key: SPRING_DATA_MONGODB_URI
+          - name: LOGZIO_LOGGER_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: logzio-secrets
+                key: LOGZIO_LOGGER_TOKEN
+          - name: LOGZIO_METRICS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: logzio-secrets
+                key: LOGZIO_METRICS_TOKEN
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness

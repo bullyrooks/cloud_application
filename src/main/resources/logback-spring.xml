@@ -5,12 +5,12 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
-                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
+                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] [%cyan(%X{trace_id}),%cyan(%X{span_id})] %yellow(%C{1.}): %msg%n%throwable
             </Pattern>
         </layout>
     </appender>
     <appender name="LogzioLogbackAppender" class="io.logz.logback.LogzioLogbackAppender">
-        <token>UaRKfHWNbOJuAIuvKjuKXWbMNuaGzNUP</token>
+        <token>${LOGZIO_LOGGER_TOKEN}</token>
         <logzioUrl>https://listener.logz.io:8071</logzioUrl>
         <logzioType>message-generator</logzioType>
     </appender>
