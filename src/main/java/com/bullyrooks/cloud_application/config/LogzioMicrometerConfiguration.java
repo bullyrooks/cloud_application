@@ -1,6 +1,7 @@
 package com.bullyrooks.cloud_application.config;
 
 import io.micrometer.core.instrument.Clock;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.logzio.LogzioConfig;
 import io.micrometer.logzio.LogzioMeterRegistry;
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.Hashtable;
 })
 @AutoConfigureAfter(MetricsAutoConfiguration.class)
 @ConditionalOnClass(LogzioMeterRegistry.class)
+@Profile("!test")
 public class LogzioMicrometerConfiguration {
 
     @Value("${logzio.metrics.url}")
@@ -71,7 +74,7 @@ public class LogzioMicrometerConfiguration {
     }
 
     @Bean
-    public LogzioMeterRegistry logzioMeterRegistry(LogzioConfig config) {
+    public MeterRegistry logzioMeterRegistry(LogzioConfig config) {
         LogzioMeterRegistry logzioMeterRegistry =
                 new LogzioMeterRegistry(config, Clock.SYSTEM);
         ArrayList<Tag> tags = new ArrayList<>();

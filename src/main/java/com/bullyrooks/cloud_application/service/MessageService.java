@@ -8,6 +8,7 @@ import com.bullyrooks.cloud_application.repository.document.MessageDocument;
 import com.bullyrooks.cloud_application.repository.mapper.MessageDocumentMapper;
 import com.bullyrooks.cloud_application.service.model.Message;
 import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.logzio.LogzioMeterRegistry;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ public class MessageService {
 
     MessageRepository messageRepository;
     MessageGeneratorClient messageGeneratorClient;
-    LogzioMeterRegistry logzioMeterRegistry;
+    MeterRegistry logzioMeterRegistry;
 
     Counter msgCount;
     Counter genMsgCount;
@@ -32,7 +33,7 @@ public class MessageService {
     @Autowired
     public MessageService(MessageRepository messageRepository,
                           MessageGeneratorClient messageGeneratorClient,
-                          LogzioMeterRegistry logzioMeterRegistry){
+                          MeterRegistry logzioMeterRegistry){
         this.messageRepository = messageRepository;
         this.messageGeneratorClient = messageGeneratorClient;
         this.logzioMeterRegistry = logzioMeterRegistry;

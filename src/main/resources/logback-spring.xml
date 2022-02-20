@@ -14,8 +14,18 @@
         <logzioUrl>https://listener.logz.io:8071</logzioUrl>
         <logzioType>message-generator</logzioType>
     </appender>
-    <root level="info">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="LogzioLogbackAppender"/>
-    </root>
+    <springProfile name="!test">
+        <root level="info">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="LogzioLogbackAppender"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="test">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+
 </configuration>
