@@ -1,5 +1,6 @@
 package com.bullyrooks.cloud_application.controller;
 
+import com.bullyrooks.cloud_application.config.TestLogzioMicrometerRegistry;
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageRequestDTO;
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageResponseDTO;
 import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorClient;
@@ -9,6 +10,8 @@ import com.bullyrooks.cloud_application.repository.document.MessageDocument;
 import com.github.javafaker.Faker;
 import com.github.javafaker.service.FakeValuesService;
 import com.github.javafaker.service.RandomService;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -16,8 +19,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -45,7 +51,7 @@ import static org.mockito.Mockito.when;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Slf4j
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+@Import(TestLogzioMicrometerRegistry.class)
 public class MessageControllerTest {
 
     static MongoDBContainer mongoDBContainer = new      MongoDBContainer("mongo:4.4.10");
@@ -70,9 +76,8 @@ public class MessageControllerTest {
             new Locale("en-US"), new RandomService());
     Faker faker = new Faker();
 
-
     @Test
-    void testSaveMessageUpd(){
+    void testSaveMessage(){
         Long userId = 1l;
 
         //given
