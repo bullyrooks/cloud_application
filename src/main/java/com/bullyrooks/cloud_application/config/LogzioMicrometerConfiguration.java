@@ -56,7 +56,7 @@ public class LogzioMicrometerConfiguration {
 
             @Override
             public Duration step() {
-                return Duration.ofSeconds(10);
+                return Duration.ofSeconds(30);
                 // example:
                 // return Duration.ofSeconds(30);
             }
