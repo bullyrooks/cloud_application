@@ -1,6 +1,5 @@
 package com.bullyrooks.cloud_application.controller;
 
-import com.bullyrooks.cloud_application.config.TestLogzioMicrometerRegistry;
 import com.bullyrooks.cloud_application.controller.dto.HelloWorldResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Slf4j
 @AutoConfigureMockMvc
-@Import(TestLogzioMicrometerRegistry.class)
 public class HelloWorldControllerTest {
     @LocalServerPort
     int randomServerPort;

@@ -9,8 +9,6 @@ import com.bullyrooks.cloud_application.repository.mapper.MessageDocumentMapper;
 import com.bullyrooks.cloud_application.service.model.Message;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Metrics;
-import io.micrometer.logzio.LogzioMeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

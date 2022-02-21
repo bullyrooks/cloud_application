@@ -3,7 +3,6 @@ package com.bullyrooks.cloud_application.controller;
 import com.bullyrooks.cloud_application.config.LoggingEnabled;
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageRequestDTO;
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageResponseDTO;
-import com.bullyrooks.cloud_application.controller.dto.HelloWorldResponse;
 import com.bullyrooks.cloud_application.controller.mapper.CreateMessageRequestDTOMapper;
 import com.bullyrooks.cloud_application.controller.mapper.CreateMessageResponseDTOMapper;
 import com.bullyrooks.cloud_application.service.MessageService;

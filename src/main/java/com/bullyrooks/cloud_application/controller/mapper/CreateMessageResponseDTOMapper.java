@@ -1,6 +1,5 @@
 package com.bullyrooks.cloud_application.controller.mapper;
 
-import com.bullyrooks.cloud_application.controller.dto.CreateMessageRequestDTO;
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageResponseDTO;
 import com.bullyrooks.cloud_application.service.model.Message;
 import org.mapstruct.Mapper;
