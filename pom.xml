@@ -23,8 +23,6 @@
         <log4j2.version>2.17.1</log4j2.version>
         <logzio-logback-appender.version>v1.0.25</logzio-logback-appender.version>
         <micrometer-registry-logzio.version>1.0.2</micrometer-registry-logzio.version>
-        <kafka-streams-test-utils.version>2.6.0</kafka-streams-test-utils.version>
-        <kafka.version>2.8.1</kafka.version>
     </properties>
     <dependencies>
         <dependency>
