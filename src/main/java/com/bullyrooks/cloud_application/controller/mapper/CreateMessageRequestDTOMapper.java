@@ -1,7 +1,7 @@
 package com.bullyrooks.cloud_application.controller.mapper;
 
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageRequestDTO;
-import com.bullyrooks.cloud_application.service.model.Message;
+import com.bullyrooks.cloud_application.service.model.MessageModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -9,6 +9,6 @@ import org.mapstruct.factory.Mappers;
 public interface CreateMessageRequestDTOMapper {
     CreateMessageRequestDTOMapper INSTANCE = Mappers.getMapper(CreateMessageRequestDTOMapper.class);
 
-    Message dtoToModel(CreateMessageRequestDTO userAccountEntity);
+    MessageModel dtoToModel(CreateMessageRequestDTO userAccountEntity);
 
 }

@@ -2,3 +2,10 @@ logzio:
   metrics:
     registry:
       mock: true
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        messageEvent-out-0:
+          destination: message.created

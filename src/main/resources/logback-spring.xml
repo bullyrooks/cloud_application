@@ -12,7 +12,7 @@
     <appender name="LogzioLogbackAppender" class="io.logz.logback.LogzioLogbackAppender">
         <token>${LOGZIO_LOGGER_TOKEN}</token>
         <logzioUrl>https://listener.logz.io:8071</logzioUrl>
-        <logzioType>message-generator</logzioType>
+        <logzioType>cloud-application</logzioType>
     </appender>
     <springProfile name="dev">
         <root level="info">

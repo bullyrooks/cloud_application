@@ -6,7 +6,7 @@ import com.bullyrooks.cloud_application.controller.dto.CreateMessageResponseDTO;
 import com.bullyrooks.cloud_application.controller.mapper.CreateMessageRequestDTOMapper;
 import com.bullyrooks.cloud_application.controller.mapper.CreateMessageResponseDTOMapper;
 import com.bullyrooks.cloud_application.service.MessageService;
-import com.bullyrooks.cloud_application.service.model.Message;
+import com.bullyrooks.cloud_application.service.model.MessageModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +24,8 @@ public class MessageController {
     @PostMapping("/message")
     public CreateMessageResponseDTO createMessage(@RequestBody CreateMessageRequestDTO request){
         log.info("createMessage : {}", request);
-        Message message = CreateMessageRequestDTOMapper.INSTANCE.dtoToModel(request);
-        Message response = messageService.saveMessage(message);
+        MessageModel messageModel = CreateMessageRequestDTOMapper.INSTANCE.dtoToModel(request);
+        MessageModel response = messageService.saveMessage(messageModel);
         return CreateMessageResponseDTOMapper.INSTANCE.modelToDTO(response);
     }
 

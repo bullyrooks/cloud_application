@@ -57,6 +57,11 @@ spec:
               secretKeyRef:
                 name: logzio-secrets
                 key: LOGZIO_METRICS_TOKEN
+          - name: SPRING_KAFKA_PROPERTIES_SASL_JAAS_CONFIG
+            valueFrom:
+              secretKeyRef:
+                name: confluent-secrets
+                key: SPRING_KAFKA_PROPERTIES_SASL_JAAS_CONFIG
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness

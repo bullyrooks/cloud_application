@@ -3,15 +3,14 @@ package com.bullyrooks.cloud_application.service;
 import com.bullyrooks.cloud_application.config.LoggingEnabled;
 import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorClient;
 import com.bullyrooks.cloud_application.message_generator.client.dto.MessageResponseDTO;
-import com.bullyrooks.cloud_application.repository.MessageRepository;
-import com.bullyrooks.cloud_application.repository.document.MessageDocument;
-import com.bullyrooks.cloud_application.repository.mapper.MessageDocumentMapper;
-import com.bullyrooks.cloud_application.service.model.Message;
+import com.bullyrooks.cloud_application.messaging.mapper.MessageEventMapper;
+import com.bullyrooks.cloud_application.service.model.MessageModel;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,9 +18,9 @@ import org.springframework.stereotype.Service;
 @LoggingEnabled
 public class MessageService {
 
-    MessageRepository messageRepository;
     MessageGeneratorClient messageGeneratorClient;
     MeterRegistry logzioMeterRegistry;
+    StreamBridge streamBridge;
 
     Counter msgCount;
     Counter genMsgCount;
@@ -29,11 +28,11 @@ public class MessageService {
     Counter messageSaved;
 
     @Autowired
-    public MessageService(MessageRepository messageRepository,
-                          MessageGeneratorClient messageGeneratorClient,
+    public MessageService(MessageGeneratorClient messageGeneratorClient,
+                          StreamBridge streamBridge,
                           MeterRegistry logzioMeterRegistry){
-        this.messageRepository = messageRepository;
         this.messageGeneratorClient = messageGeneratorClient;
+        this.streamBridge = streamBridge;
         this.logzioMeterRegistry = logzioMeterRegistry;
         initCounters();
     }
@@ -54,24 +53,22 @@ public class MessageService {
     }
 
 
-    public Message saveMessage(Message message){
+    public MessageModel saveMessage(MessageModel messageModel) {
 
         msgCount.increment();
-        if (StringUtils.isEmpty(message.getMessage())){
+        if (StringUtils.isEmpty(messageModel.getMessage())) {
 
             genMsgCount.increment();
             log.info("No message, retrieve from message generator");
             MessageResponseDTO dto = messageGeneratorClient.getMessage();
-            message.setMessage(dto.getMessage());
+            messageModel.setMessage(dto.getMessage());
             genMsgSuccess.increment();
-            log.info("retrieved message: {}", message.getMessage());
+            log.info("retrieved message: {}", messageModel.getMessage());
         }
 
-        MessageDocument msgDoc = MessageDocumentMapper.INSTANCE.modelToDocument(message);
-
-        log.info("saving document: {}", msgDoc);
-        MessageDocument returnDoc = messageRepository.save(msgDoc);
-        messageSaved.increment();
-        return MessageDocumentMapper.INSTANCE.documentToModel(returnDoc);
+        log.info("publishing event: {}", messageModel);
+        streamBridge.send("message.created",
+                MessageEventMapper.INSTANCE.modelToEvent(messageModel));
+        return messageModel;
     }
 }

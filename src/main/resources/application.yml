@@ -1,9 +1,21 @@
 spring:
   application:
     name: cloud-application
-  data:
-    mongodb:
-      uri: mongodb+srv://bullyrooks:${mongodb.password}@bullyrooks.4zqpz.mongodb.net/bullyrooks?retryWrites=true&w=majority
+  cloud:
+    stream:
+      function:
+        bindings:
+          messageEvent-out-0:
+            destination: message.created
+  kafka:
+    properties:
+      sasl.mechanism: PLAIN
+      bootstrap.servers: pkc-2396y.us-east-1.aws.confluent.cloud:9092
+      security.protocol: SASL_SSL
+#      basic.auth.credentials.source: USER_INFO
+#      schema.registry.basic.auth.user.info: {{ SR_API_KEY }}:{{ SR_API_SECRET }}
+#      schema.registry.url: https://psrc-gk071.us-east-2.aws.confluent.cloud
+
 management:
   endpoints:
     web:
@@ -16,7 +28,7 @@ management:
       show-details: always
       group:
         readiness:
-          include: "readinessState,mongo,messageGenerator"
+          include: "readinessState,messageGenerator"
     metrics:
       enabled: true
 
