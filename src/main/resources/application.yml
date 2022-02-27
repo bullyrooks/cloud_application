@@ -11,7 +11,6 @@ spring:
     properties:
       sasl.mechanism: PLAIN
       bootstrap.servers: pkc-2396y.us-east-1.aws.confluent.cloud:9092
-      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule   required username='DDHB3H3DPMAHCOZS'   password='1bqJIQUDi6XAaujDO04/RixaOPsaEPUDmNrK+weVVGxymqK0JaVmlyCYi1BuHmt6';
       security.protocol: SASL_SSL
 #      basic.auth.credentials.source: USER_INFO
 #      schema.registry.basic.auth.user.info: {{ SR_API_KEY }}:{{ SR_API_SECRET }}
