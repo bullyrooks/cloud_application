@@ -4,11 +4,7 @@ import com.bullyrooks.cloud_application.controller.dto.CreateMessageRequestDTO;
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageResponseDTO;
 import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorClient;
 import com.bullyrooks.cloud_application.message_generator.client.dto.MessageResponseDTO;
-import com.bullyrooks.cloud_application.repository.MessageRepository;
-import com.bullyrooks.cloud_application.repository.document.MessageDocument;
 import com.github.javafaker.Faker;
-import com.github.javafaker.service.FakeValuesService;
-import com.github.javafaker.service.RandomService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -18,47 +14,38 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.cloud.stream.binder.test.OutputDestination;
+import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.messaging.Message;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.testcontainers.containers.MongoDBContainer;
 
-import java.util.Locale;
-
-import static com.mongodb.internal.connection.tlschannel.util.Util.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Slf4j
 @AutoConfigureMockMvc
+@Import(TestChannelBinderConfiguration.class)
 public class MessageControllerTest {
 
-    static MongoDBContainer mongoDBContainer = new      MongoDBContainer("mongo:4.4.10");
-    {
-        mongoDBContainer.start();
-    }
-    @DynamicPropertySource
-    static void setProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-    }
     private final String MESSAGE_PATH = "/message";
 
     @LocalServerPort
     int randomServerPort;
 
-    @Autowired
-    MessageRepository messageRepository;
     @MockBean
     MessageGeneratorClient messageGeneratorClient;
 
-    FakeValuesService fakesvc = new FakeValuesService(
-            new Locale("en-US"), new RandomService());
+    @Autowired
+    OutputDestination outputDestination;
+
     Faker faker = new Faker();
 
     @Test
@@ -88,13 +75,12 @@ public class MessageControllerTest {
         assertEquals(request.getLastName(), dto.getLastName());
         assertEquals(request.getMessage(), dto.getMessage());
 
-        MessageDocument savedDoc = messageRepository.findById(dto.getMessageId()).get();
-        assertEquals(request.getFirstName(), savedDoc.getFirstName());
-        assertEquals(request.getLastName(), savedDoc.getLastName());
-        assertEquals(request.getMessage(), savedDoc.getMessage());
+        Message<byte[]> receievedMessage = outputDestination.receive(1000,"message.created");
+        log.info(String.valueOf(receievedMessage.getPayload()));
+
     }
     @Test
-    void testGetReturnsMessageIfMissing(){
+    void testGetReturnsMessageIfMissing() throws InterruptedException {
         Long userId = 1l;
 
         //given
@@ -124,10 +110,6 @@ public class MessageControllerTest {
         assertEquals(request.getLastName(), dto.getLastName());
         assertTrue(StringUtils.isNotBlank(dto.getMessage()));
 
-        MessageDocument savedDoc = messageRepository.findById(dto.getMessageId()).get();
-        assertEquals(request.getFirstName(), savedDoc.getFirstName());
-        assertEquals(request.getLastName(), savedDoc.getLastName());
-        assertEquals(dto.getMessage(), savedDoc.getMessage());
     }
 
 }

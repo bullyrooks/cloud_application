@@ -1,7 +1,7 @@
 package com.bullyrooks.cloud_application.controller.mapper;
 
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageResponseDTO;
-import com.bullyrooks.cloud_application.service.model.Message;
+import com.bullyrooks.cloud_application.service.model.MessageModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -9,6 +9,6 @@ import org.mapstruct.factory.Mappers;
 public interface CreateMessageResponseDTOMapper {
     CreateMessageResponseDTOMapper INSTANCE = Mappers.getMapper(CreateMessageResponseDTOMapper.class);
 
-    CreateMessageResponseDTO modelToDTO(Message message);
+    CreateMessageResponseDTO modelToDTO(MessageModel messageModel);
 
 }
