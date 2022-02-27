@@ -4,6 +4,8 @@ import com.bullyrooks.cloud_application.controller.dto.CreateMessageRequestDTO;
 import com.bullyrooks.cloud_application.controller.dto.CreateMessageResponseDTO;
 import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorClient;
 import com.bullyrooks.cloud_application.message_generator.client.dto.MessageResponseDTO;
+import com.bullyrooks.cloud_application.messaging.dto.MessageEvent;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +25,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,7 +54,7 @@ public class MessageControllerTest {
     Faker faker = new Faker();
 
     @Test
-    void testSaveMessage(){
+    void testSaveMessage() throws IOException {
         Long userId = 1l;
 
         //given
@@ -76,11 +81,17 @@ public class MessageControllerTest {
         assertEquals(request.getMessage(), dto.getMessage());
 
         Message<byte[]> receievedMessage = outputDestination.receive(1000,"message.created");
-        log.info(String.valueOf(receievedMessage.getPayload()));
+        String messageStr = new String(receievedMessage.getPayload(), StandardCharsets.UTF_8);
+        log.info("message string: {}", messageStr);
+        ObjectMapper mapper = new ObjectMapper();
+        MessageEvent event = mapper.reader().readValue(messageStr, MessageEvent.class);
+        assertEquals(request.getFirstName(), event.getFirstName());
+        assertEquals(request.getLastName(), event.getLastName());
+        assertEquals(request.getMessage(), event.getMessage());
 
     }
     @Test
-    void testGetReturnsMessageIfMissing() throws InterruptedException {
+    void testGetReturnsMessageIfMissing() throws InterruptedException, IOException {
         Long userId = 1l;
 
         //given
@@ -110,6 +121,14 @@ public class MessageControllerTest {
         assertEquals(request.getLastName(), dto.getLastName());
         assertTrue(StringUtils.isNotBlank(dto.getMessage()));
 
+        Message<byte[]> receievedMessage = outputDestination.receive(1000,"message.created");
+        String messageStr = new String(receievedMessage.getPayload(), StandardCharsets.UTF_8);
+        log.info("message string: {}", messageStr);
+        ObjectMapper mapper = new ObjectMapper();
+        MessageEvent event = mapper.reader().readValue(messageStr, MessageEvent.class);
+        assertEquals(request.getFirstName(), event.getFirstName());
+        assertEquals(request.getLastName(), event.getLastName());
+        assertTrue(StringUtils.isNotBlank(event.getMessage()));
     }
 
 }
