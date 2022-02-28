@@ -67,11 +67,13 @@ spec:
               path: /actuator/health/liveness
               port: 8080
             initialDelaySeconds: 120
+            periodSeconds: 120
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: 8080
             initialDelaySeconds: 120
+            periodSeconds: 120
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
