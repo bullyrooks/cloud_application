@@ -17,4 +17,4 @@ FROM openjdk:15.0.2-slim-buster
 COPY --from=build target/*.jar app.jar
 ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.11.0/opentelemetry-javaagent.jar /opt/opentelemetry-javaagent.jar
 ENV JAVA_TOOL_OPTIONS=-javaagent:/opt/opentelemetry-javaagent.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-Dotel.instrumentation.common.experimental.suppress-messaging-receive-spans=true", "-jar", "app.jar"]
