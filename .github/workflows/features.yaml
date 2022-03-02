@@ -17,7 +17,7 @@ jobs:
       - name: Set environment variables
         run: |
           # Short name for current branch. For PRs, use target branch (base ref)
-          GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
+          GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
 
       - name: Set up JDK 11
@@ -41,7 +41,7 @@ jobs:
             /Users/brook/workspace/cloud_application/target/pacts \
             --broker-base-url ${{ env.PACTFLOW_URL }} \
             --broker-token=${{ secrets.PACTFLOW_TOKEN }} \
-            --consumer-app-version ${{ GIT_BRANCH }} \
+            --consumer-app-version ${{ env.GIT_BRANCH }} \
             --tag-with-git-branch
 
       - name: Set up Docker Buildx
