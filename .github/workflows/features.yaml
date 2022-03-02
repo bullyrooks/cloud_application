@@ -33,8 +33,8 @@ jobs:
       - name: Publish Contracts
         uses: docker://pactfoundation/pact-cli:latest
         with:
-          entrypoint: publish
           args: |
+            publish
             /Users/brook/workspace/cloud_application/target/pacts \
             --broker-base-url ${{ env.PACTFLOW_URL }} \
             --broker-token=${{ secrets.PACTFLOW_TOKEN }} \
