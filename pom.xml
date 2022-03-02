@@ -172,6 +172,7 @@
                 <configuration>
                     <pactBrokerUrl>${env.PACTFLOW_URL}</pactBrokerUrl>
                     <pactBrokerToken>${env.PACTFLOW_TOKEN}</pactBrokerToken>
+                    <projectVersion>${env.PACT_PUBLISH_CONSUMER_VERSION}</projectVersion>
                     <pactBrokerAuthenticationScheme>Bearer</pactBrokerAuthenticationScheme>
                 </configuration>
             </plugin>
