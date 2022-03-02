@@ -29,15 +29,15 @@ jobs:
 
       - name: Build with Maven
         run: |
-          echo ${PWD}
+          echo ${{PWD}}
           ./mvnw -B test
 
       - name: Publish Contracts
         uses: docker://pactfoundation/pact-cli:latest
         with:
           args: |
-            -w ${PWD} \
-            -v ${PWD}:${PWD} \
+            -w /home/runner/work/_temp \
+            -v /home/runner/work/_temp:/home/runner/work/_temp \
             publish
             ./target/pacts \
             --broker-base-url ${{ env.PACTFLOW_URL }} \
