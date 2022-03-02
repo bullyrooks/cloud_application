@@ -31,17 +31,14 @@ jobs:
         run: ./mvnw -B test
 
       - name: Publish Contracts
-        run: |
-          docker pull pactfoundation/pact-cli:latest
-          docker run --rm \
-           -w /Users/brook/workspace/cloud_application \
-           -v /Users/brook/workspace/cloud_application:/Users/brook/workspace/cloud_application \
-            pactfoundation/pact-cli:latest \
-            publish \
+        uses: docker://pactfoundation/pact-cli:latest
+        with:
+          entrypoint: publish
+          args: |
             /Users/brook/workspace/cloud_application/target/pacts \
             --broker-base-url ${{ env.PACTFLOW_URL }} \
             --broker-token=${{ secrets.PACTFLOW_TOKEN }} \
-            --consumer-app-version ${{ github.sha }} \
+            --consumer-app-version ${{ env.GIT_BRANCH }} \
             --tag-with-git-branch
 
       - name: Set up Docker Buildx
