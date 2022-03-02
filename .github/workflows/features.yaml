@@ -41,7 +41,7 @@ jobs:
             /Users/brook/workspace/cloud_application/target/pacts \
             --broker-base-url ${{ env.PACTFLOW_URL }} \
             --broker-token=${{ secrets.PACTFLOW_TOKEN }} \
-            --consumer-app-version ${{ env.GIT_BRANCH }} \
+            --consumer-app-version ${{ github.sha }} \
             --tag-with-git-branch
 
       - name: Set up Docker Buildx
