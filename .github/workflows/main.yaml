@@ -35,7 +35,7 @@ jobs:
           wget -O - https://raw.githubusercontent.com/treeder/bump/master/gitbump.sh | bash
           echo "VERSION=$(git tag --sort=-v:refname --list "v[0-9]*" | head -n 1 | cut -c 2-)" >> $GITHUB_ENV
           echo "PACT_PUBLISH_CONSUMER_VERSION=$VERSION" >> $GITHUB_ENV
-          echo "PACT_PUBLISH_CONSUMER_BRANCHNAME=$GIT_BRANCH" >> $GITHUB_ENV
+          echo "PACT_PUBLISH_CONSUMER_BRANCHNAME=main" >> $GITHUB_ENV
 
       - name: Build with Maven
         run: ./mvnw pact:publish
