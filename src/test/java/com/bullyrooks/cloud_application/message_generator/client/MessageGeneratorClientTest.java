@@ -75,7 +75,7 @@ public class MessageGeneratorClientTest {
     public RequestResponsePact generateMessagePact(PactDslWithProvider builder) throws JSONException, IOException {
         // @formatter:off
         return builder
-                .given("generater creates a message")
+                .given("generator creates a message")
                 .uponReceiving("a request to GET a message")
                 .path("/message")
                 .method(HttpMethod.GET)
