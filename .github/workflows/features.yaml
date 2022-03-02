@@ -34,10 +34,8 @@ jobs:
         uses: docker://pactfoundation/pact-cli:latest
         with:
           args: |
-            -w /home/runner/work/_temp \
-            -v /home/runner/work/_temp:/home/runner/work/_temp \
             publish
-            ./target/pacts \
+            /home/runner/work/_temp/target/pacts \
             --broker-base-url ${{ env.PACTFLOW_URL }} \
             --broker-token=${{ secrets.PACTFLOW_TOKEN }} \
             --consumer-app-version ${{ env.GIT_BRANCH }} \
