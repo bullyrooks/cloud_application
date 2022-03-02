@@ -6,6 +6,7 @@ on:
       - main
 env:
   PACTFLOW_URL: https://bullyrooks.pactflow.io
+  PACTFLOW_TOKEN: ${{secrets.PACTFLOW_TOKEN}}
 
 jobs:
   build:
