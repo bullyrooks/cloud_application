@@ -7,6 +7,8 @@ on:
 
 env:
   PACTFLOW_URL: https://bullyrooks.pactflow.io
+  PACTFLOW_TOKEN: ${{secrets.PACTFLOW_TOKEN}}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,20 +34,11 @@ jobs:
           git fetch --tags
           wget -O - https://raw.githubusercontent.com/treeder/bump/master/gitbump.sh | bash
           echo "VERSION=$(git tag --sort=-v:refname --list "v[0-9]*" | head -n 1 | cut -c 2-)" >> $GITHUB_ENV
+          echo "PACT_PUBLISH_CONSUMER_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "PACT_PUBLISH_CONSUMER_BRANCHNAME=$GIT_BRANCH" >> $GITHUB_ENV
 
-      - name: Publish Contracts
-        run: |
-          docker pull pactfoundation/pact-cli:latest
-          docker run --rm \
-           -w /Users/brook/workspace/cloud_application \
-           -v /Users/brook/workspace/cloud_application:/Users/brook/workspace/cloud_application \
-            pactfoundation/pact-cli:latest \
-            publish \
-            /Users/brook/workspace/cloud_application/target/pacts \
-            --broker-base-url ${{ PACTFLOW_URL }} \
-            --broker-token=${{ secrets.PACTFLOW_TOKEN }} \
-            --consumer-app-version ${{ env.VERSION }} \
-            --tag-with-git-branch
+      - name: Build with Maven
+        run: ./mvnw pact:publish
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
