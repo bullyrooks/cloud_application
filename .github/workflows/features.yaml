@@ -34,7 +34,7 @@ jobs:
             pactfoundation/pact-cli:latest \
             publish \
             /Users/brook/workspace/cloud_application/target/pacts \
-            --broker-base-url ${{ PACTFLOW_URL }} \
+            --broker-base-url ${{ env.PACTFLOW_URL }} \
             --broker-token=${{ secrets.PACTFLOW_TOKEN }} \
             --consumer-app-version ${GITHUB_REF##*/} \
             --tag-with-git-branch
