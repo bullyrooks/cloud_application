@@ -168,7 +168,7 @@
             <plugin>
                 <groupId>au.com.dius.pact.provider</groupId>
                 <artifactId>maven</artifactId>
-                <version>4.1.11</version>
+                <version>4.3.4</version>
                 <configuration>
                     <pactBrokerUrl>${env.PACTFLOW_URL}</pactBrokerUrl>
                     <pactBrokerToken>${env.PACTFLOW_TOKEN}</pactBrokerToken>
