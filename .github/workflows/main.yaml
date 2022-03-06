@@ -38,10 +38,10 @@ jobs:
 
       - name: Publish Pact Contract
         run: |
-        ./mvnw pact:publish \
-        -Dpact.publish.consumer.branchName=main \
-        -Dconsumer.version=${{env.VERSION}} \
-        -Dpact.consumer.tags=okteto
+          ./mvnw pact:publish \
+          -Dpact.publish.consumer.branchName=main \
+          -Dconsumer.version=${{env.VERSION}} \
+          -Dpact.consumer.tags=okteto
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
