@@ -1,4 +1,4 @@
-name: Cloud Application Feature Branch Build
+name: Cloud Application Main Branch Build
 
 on:
   push:
@@ -101,6 +101,13 @@ jobs:
           branch: gh-charts
           app_version: ${{ env.VERSION }}
           chart_version: ${{ env.VERSION }}
+
+      - name: Pact Can-i-deploy
+        run: |
+          ./mvnw pact:can-i-deploy \
+          -Dpacticipant=cloud-application \
+          -DpacticipantVersion=${{ env.VERSION }} \
+          -DtoTag=okteto
 
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
