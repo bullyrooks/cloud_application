@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -53,11 +55,18 @@ public class MessageControllerTest {
 
     Faker faker = new Faker();
 
+    @AfterEach
+    void cleanup(){
+        //cleanup
+        outputDestination.clear("message.created");
+    }
+
     @Test
     void testSaveMessage() throws IOException {
         Long userId = 1l;
 
         //given
+        Instant testStart = Instant.now();
         CreateMessageRequestDTO request = CreateMessageRequestDTO
                 .builder()
                 .firstName(faker.name().firstName())
@@ -79,6 +88,7 @@ public class MessageControllerTest {
         assertEquals(request.getFirstName(), dto.getFirstName());
         assertEquals(request.getLastName(), dto.getLastName());
         assertEquals(request.getMessage(), dto.getMessage());
+        assertTrue(dto.getGeneratedDate().isAfter(testStart));
 
         Message<byte[]> receievedMessage = outputDestination.receive(1000,"message.created");
         String messageStr = new String(receievedMessage.getPayload(), StandardCharsets.UTF_8);
@@ -89,12 +99,14 @@ public class MessageControllerTest {
         assertEquals(request.getLastName(), event.getLastName());
         assertEquals(request.getMessage(), event.getMessage());
 
+
     }
     @Test
     void testGetReturnsMessageIfMissing() throws InterruptedException, IOException {
         Long userId = 1l;
 
         //given
+        Instant testStart = Instant.now();
         CreateMessageRequestDTO request = CreateMessageRequestDTO
                 .builder()
                 .firstName(faker.name().firstName())
@@ -104,6 +116,7 @@ public class MessageControllerTest {
         when(messageGeneratorClient.getMessage()).thenReturn(
                 MessageResponseDTO.builder()
                 .message(faker.gameOfThrones().quote())
+                        .generatedDate(Instant.now())
                 .build());
 
         //when
@@ -120,6 +133,7 @@ public class MessageControllerTest {
         assertEquals(request.getFirstName(), dto.getFirstName());
         assertEquals(request.getLastName(), dto.getLastName());
         assertTrue(StringUtils.isNotBlank(dto.getMessage()));
+        assertTrue(dto.getGeneratedDate().isAfter(testStart));
 
         Message<byte[]> receievedMessage = outputDestination.receive(1000,"message.created");
         String messageStr = new String(receievedMessage.getPayload(), StandardCharsets.UTF_8);
@@ -129,6 +143,7 @@ public class MessageControllerTest {
         assertEquals(request.getFirstName(), event.getFirstName());
         assertEquals(request.getLastName(), event.getLastName());
         assertTrue(StringUtils.isNotBlank(event.getMessage()));
+
     }
 
 }

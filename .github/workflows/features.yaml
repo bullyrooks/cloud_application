@@ -4,6 +4,9 @@ on:
   push:
     branches-ignore:
       - main
+env:
+  PACTFLOW_URL: https://bullyrooks.pactflow.io
+  PACTFLOW_TOKEN: ${{secrets.PACTFLOW_TOKEN}}
 
 jobs:
   build:
@@ -27,10 +30,11 @@ jobs:
           distribution: 'adopt'
           cache: maven
 
-      - name: Build with Maven
-        run: |
-          ./mvnw -B test
-          ./mvnw pact:publish
+      - name: Maven Tests
+        run: ./mvnw -B test
+
+      - name: Publish Contracts
+        run: ./mvnw pact:publish
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
