@@ -3,6 +3,7 @@ package com.bullyrooks.cloud_application.service;
 import com.bullyrooks.cloud_application.config.LoggingEnabled;
 import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorClient;
 import com.bullyrooks.cloud_application.message_generator.client.dto.MessageResponseDTO;
+import com.bullyrooks.cloud_application.message_generator.mapper.MessageGeneratorMapper;
 import com.bullyrooks.cloud_application.messaging.mapper.MessageEventMapper;
 import com.bullyrooks.cloud_application.service.model.MessageModel;
 import io.micrometer.core.instrument.Counter;
@@ -12,6 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
 
 @Service
 @Slf4j
@@ -61,9 +64,12 @@ public class MessageService {
             genMsgCount.increment();
             log.info("No message, retrieve from message generator");
             MessageResponseDTO dto = messageGeneratorClient.getMessage();
-            messageModel.setMessage(dto.getMessage());
+            messageModel = MessageGeneratorMapper.INSTANCE.messageResponseToMessage(messageModel, dto);
             genMsgSuccess.increment();
             log.info("retrieved message: {}", messageModel.getMessage());
+        } else {
+            //if they provided a message, return now
+            messageModel.setGeneratedDate(Instant.now());
         }
 
         log.info("publishing event: {}", messageModel);
