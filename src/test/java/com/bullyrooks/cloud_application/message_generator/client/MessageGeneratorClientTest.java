@@ -18,6 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.ObjectFactory;
@@ -48,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @PactTestFor(providerName = MessageGeneratorClientTest.PROVIDER, port = MessageGeneratorClientTest.PROVIDER_PORT)
 @Slf4j
+@Tag("ContractTest")
 public class MessageGeneratorClientTest {
     final static String PROVIDER = "message-generator";
     final static String PROVIDER_PORT = "8888";

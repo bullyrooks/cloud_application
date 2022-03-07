@@ -23,7 +23,33 @@
         <logzio-logback-appender.version>v1.0.25</logzio-logback-appender.version>
         <micrometer-registry-logzio.version>1.0.2</micrometer-registry-logzio.version>
         <pact.version>4.0.10</pact.version>
+        <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
     </properties>
+    <profiles>
+        <profile>
+            <id>contract</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>${maven-failsafe-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <groups>ContractTest</groups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -158,6 +184,13 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <excludedGroups>ContractTest</excludedGroups>
                 </configuration>
             </plugin>
             <plugin>
