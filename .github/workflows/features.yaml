@@ -36,8 +36,8 @@ jobs:
       - name: Publish Contracts
         run: |
          ./mvnw pact:publish \
-         -Dpact.publish.consumer.branchName=${{env.$GIT_BRANCH}} \
-         -Dconsumer.version=${{env.$GIT_BRANCH}} \
+         -Dpact.publish.consumer.branchName=${{env.GIT_BRANCH}} \
+         -Dconsumer.version=${{env.GIT_BRANCH}} \
          -Dpact.consumer.tags=development
 
       - name: Set up Docker Buildx
