@@ -34,7 +34,11 @@ jobs:
         run: ./mvnw -B test
 
       - name: Publish Contracts
-        run: ./mvnw pact:publish
+        run: |
+         ./mvnw pact:publish \
+         -Dpact.publish.consumer.branchName=${{env.$GIT_BRANCH}} \
+         -Dconsumer.version=${{env.$GIT_BRANCH}} \
+         -Dpact.consumer.tags=development
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -80,3 +84,9 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      - name: Pact Can-i-deploy
+        run: |
+          ./mvnw pact:can-i-deploy \
+          -Dpacticipant=cloud-application \
+          -DpacticipantVersion=${{ env.VERSION }} \
+          -DtoTag=okteto
