@@ -23,6 +23,19 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           cache: maven
+      - name: find current version
+        uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-latest-tag
+
+      - name: get current version tag
+        run: |
+          echo "VERSION=${{ steps.get-latest-tag.outputs.tag }}" >> $GITHUB_ENV
+          echo ${{ env.VERSION }}
+
+      - name: Echo current version tag
+        run: |
+          echo $VERSION
+          echo ${{ env.VERSION }}
 
       - name: Build with Maven
         run: ./mvnw -B test
@@ -33,8 +46,18 @@ jobs:
           git config --global user.name "Actions"
           git fetch --tags
           wget -O - https://raw.githubusercontent.com/treeder/bump/master/gitbump.sh | bash
-          echo "VERSION=$(git tag --sort=-v:refname --list "v[0-9]*" | head -n 1 | cut -c 2-)" >> $GITHUB_ENV
-          echo "PACT_PUBLISH_CONSUMER_VERSION=$VERSION" >> $GITHUB_ENV
+        if: env.VERSION == ''
+
+      - name: get version tag after bump
+        uses: actions-ecosystem/action-get-latest-tag@v1
+        id: get-bumped-tag
+        if: env.VERSION == ''
+
+      - name: get release version
+        run: |
+          echo "VERSION=${{ steps.get-bumped-tag.outputs.tag }}" >> $GITHUB_ENV
+          echo ${{ env.VERSION }}
+        if: env.VERSION == ''
 
       - name: Publish Pact Contract
         run: |
