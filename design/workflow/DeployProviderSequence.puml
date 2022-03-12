@@ -1,0 +1,49 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+Actor "Developer" as dev
+participant "Provider Repo" as provrepo
+participant "Provider Github Actions" as provgh
+participant "Pactflow" as pf
+participant "canister.io" as can
+participant "Okteto" as okteto
+
+dev -> provrepo : merge to main
+provrepo -> provgh : trigger main workflow
+
+provgh -> provrepo : get tag for commit
+alt no tag exists
+    note right of provgh
+        new main commit flow
+    end note
+    provgh -> provgh : generate new version number
+    provgh -> provrepo : tag with release candidate\nversion number
+else
+    note right of provgh
+        rebuild workflow can reuse
+        existing release candidate
+        version tag
+    end note
+end
+
+provgh -> provgh : maven build and test
+provgh -> provgh : provider contract verification against prod, use final version
+
+provgh -> provgh : can-i-deploy
+
+alt can-i-deploy fails
+    provgh -> dev : build failure
+end
+
+provgh -> provgh : create final version tag
+provgh -> provrepo : tag git commit with final version
+provgh -> can : push final version image
+
+provgh -> provgh :generate helm chart
+provgh -> provrepo : publish helm chart
+
+provgh -> okteto : helm upgrade
+
+
+@enduml
