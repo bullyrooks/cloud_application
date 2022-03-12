@@ -20,8 +20,8 @@ jobs:
           # Short name for current branch. For PRs, use target branch (base ref)
           GIT_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
-          echo "PACT_PUBLISH_CONSUMER_VERSION=$GIT_BRANCH" >> $GITHUB_ENV
-          echo "PACT_PUBLISH_CONSUMER_BRANCHNAME=$GIT_BRANCH" >> $GITHUB_ENV
+          echo "VERSION=$GITHUB_SHA"
+          echo "VERSION=$GITHUB_SHA" >> $GITHUB_ENV
 
       - name: Set up JDK 11
         uses: actions/setup-java@v3
@@ -37,7 +37,7 @@ jobs:
         run: |
          ./mvnw pact:publish \
          -Dpact.publish.consumer.branchName=${{env.GIT_BRANCH}} \
-         -Dconsumer.version=${{env.GITHUB_SHA}} \
+         -Dconsumer.version=${{env.VERSION}} \
          -Dpact.consumer.tags=development
 
       - name: Set up Docker Buildx
