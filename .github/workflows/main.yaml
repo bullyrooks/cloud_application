@@ -37,14 +37,14 @@ jobs:
           echo $VERSION
           echo ${{ env.VERSION }}
 
-#      - name: Bump version
-#        run: |
-#          git config --global user.email "github+actions@gmail.com"
-#          git config --global user.name "Actions"
-#          git fetch --tags
-#          wget -O - https://raw.githubusercontent.com/treeder/bump/master/gitbump.sh | bash
-#          echo "VERSION=$(git tag --sort=-v:refname --list "v[0-9]*" | head -n 1 | cut -c 2-)" >> $GITHUB_ENV
-#          echo ${{ env.VERSION }}
+      - name: Bump version
+        run: |
+          git config --global user.email "github+actions@gmail.com"
+          git config --global user.name "Actions"
+          git fetch --tags
+          wget -O - https://raw.githubusercontent.com/treeder/bump/master/gitbump.sh | bash
+          echo "VERSION=$(git tag --sort=-v:refname --list "v[0-9]*" | head -n 1 | cut -c 2-)" >> $GITHUB_ENV
+          echo ${{ env.VERSION }}
 
       - name: Build with Maven
         run: ./mvnw -B test
