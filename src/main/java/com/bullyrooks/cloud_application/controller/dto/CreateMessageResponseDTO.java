@@ -11,4 +11,5 @@ public class CreateMessageResponseDTO {
     private String lastName;
     private String message;
     private Instant generatedDate;
+    private String source;
 }

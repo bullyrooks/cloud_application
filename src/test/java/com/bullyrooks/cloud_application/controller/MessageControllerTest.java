@@ -89,6 +89,7 @@ public class MessageControllerTest {
         assertEquals(request.getLastName(), dto.getLastName());
         assertEquals(request.getMessage(), dto.getMessage());
         assertTrue(dto.getGeneratedDate().isAfter(testStart));
+        assertEquals("User", dto.getSource());
 
         Message<byte[]> receievedMessage = outputDestination.receive(1000,"message.created");
         String messageStr = new String(receievedMessage.getPayload(), StandardCharsets.UTF_8);
@@ -117,6 +118,7 @@ public class MessageControllerTest {
                 MessageResponseDTO.builder()
                 .message(faker.gameOfThrones().quote())
                         .generatedDate(Instant.now())
+                        .source("Game of Thrones")
                 .build());
 
         //when
@@ -134,6 +136,7 @@ public class MessageControllerTest {
         assertEquals(request.getLastName(), dto.getLastName());
         assertTrue(StringUtils.isNotBlank(dto.getMessage()));
         assertTrue(dto.getGeneratedDate().isAfter(testStart));
+        assertTrue(StringUtils.isNotBlank(dto.getSource()));
 
         Message<byte[]> receievedMessage = outputDestination.receive(1000,"message.created");
         String messageStr = new String(receievedMessage.getPayload(), StandardCharsets.UTF_8);

@@ -70,6 +70,7 @@ public class MessageService {
         } else {
             //if they provided a message, return now
             messageModel.setGeneratedDate(Instant.now());
+            messageModel.setSource("User");
         }
 
         log.info("publishing event: {}", messageModel);
