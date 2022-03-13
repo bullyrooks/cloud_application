@@ -142,7 +142,7 @@ jobs:
         run: |
           docker run --rm pactfoundation/pact-cli:latest \
           broker record-release \
-          --environment=okteto 
+          --environment=okteto \
           --pacticipant=cloud-application \
           --version=${{ env.VERSION }} \
           --broker-base-url=${{ env.PACTFLOW_URL }} \
@@ -152,7 +152,7 @@ jobs:
         run: |
           docker run --rm pactfoundation/pact-cli:latest \
           broker record-deployment \
-          --environment=okteto 
+          --environment=okteto \
           --pacticipant=cloud-application \
           --version=${{ env.VERSION }} \
           --broker-base-url=${{ env.PACTFLOW_URL }} \
