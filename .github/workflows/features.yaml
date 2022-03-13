@@ -77,5 +77,5 @@ jobs:
         run: |
           ./mvnw pact:can-i-deploy \
           -Dpacticipant=cloud-application \
-          -DpacticipantVersion=${{ env.GIT_BRANCH }} \
+          -DpacticipantVersion=${{ env.VERSION }} \
           -DtoTag=okteto
