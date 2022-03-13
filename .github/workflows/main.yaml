@@ -143,3 +143,9 @@ jobs:
             helm repo update
             helm upgrade cloud-application bullyrooks/cloud-application --install --version ${{ env.VERSION }}
           kubeconfig: '${{ secrets.KUBECONFIG }}'
+      - name: Publish Pact Contract
+        run: |
+          ./mvnw pact:publish \
+          -Dpact.publish.consumer.branchName=main \
+          -Dconsumer.version=${{env.VERSION}} \
+          -Dpact.consumer.tags=okteto
