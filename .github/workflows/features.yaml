@@ -75,7 +75,10 @@ jobs:
 
       - name: Pact Can-i-deploy
         run: |
-          ./mvnw pact:can-i-deploy \
-          -Dpacticipant=cloud-application \
-          -DpacticipantVersion=${{ env.VERSION }} \
-          -DtoTag=okteto
+          docker run --rm pactfoundation/pact-cli:latest \
+          broker can-i-deploy \
+          --pacticipant=cloud-application  \
+          --to-environment=okteto \
+          --version=${{ env.VERSION }}  \
+          --broker-base-url=${{ env.PACTFLOW_URL }} \
+          --broker-token=${{ env.PACTFLOW_TOKEN }}
