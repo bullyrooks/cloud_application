@@ -69,6 +69,9 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      - name: Wait for contract verification
+        run: |
+          sleep 5s
 
       - name: Pact Can-i-deploy
         run: |
