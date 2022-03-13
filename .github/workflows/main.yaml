@@ -127,7 +127,7 @@ jobs:
 
       - name: Pact Can-i-deploy
         run: |
-          ./mvnw pact:can-i-deploy \
+          ./mvnw pact:can-i-deploy -X \
           -Dpacticipant=cloud-application \
           -DpacticipantVersion=${{ env.VERSION }} \
           -DtoTag=okteto
