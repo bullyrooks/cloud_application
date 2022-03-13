@@ -119,7 +119,7 @@ jobs:
         run: |
           docker run --rm pactfoundation/pact-cli:latest \
           broker can-i-deploy \
-          --pacticipant=message-generator  \
+          --pacticipant=cloud-application  \
           --to-environment=okteto \
           --version=${{ env.VERSION }}  \
           --broker-base-url=${{ env.PACTFLOW_URL }} \
