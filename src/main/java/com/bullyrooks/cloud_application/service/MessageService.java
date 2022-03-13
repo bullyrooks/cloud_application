@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-
 @Service
 @Slf4j
 @LoggingEnabled
@@ -67,10 +65,6 @@ public class MessageService {
             messageModel = MessageGeneratorMapper.INSTANCE.messageResponseToMessage(messageModel, dto);
             genMsgSuccess.increment();
             log.info("retrieved message: {}", messageModel.getMessage());
-        } else {
-            //if they provided a message, return now
-            messageModel.setGeneratedDate(Instant.now());
-            messageModel.setSource("User");
         }
 
         log.info("publishing event: {}", messageModel);
