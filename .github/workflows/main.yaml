@@ -37,27 +37,17 @@ jobs:
           echo $VERSION
           echo ${{ env.VERSION }}
 
+#      - name: Bump version
+#        run: |
+#          git config --global user.email "github+actions@gmail.com"
+#          git config --global user.name "Actions"
+#          git fetch --tags
+#          wget -O - https://raw.githubusercontent.com/treeder/bump/master/gitbump.sh | bash
+#          echo "VERSION=$(git tag --sort=-v:refname --list "v[0-9]*" | head -n 1 | cut -c 2-)" >> $GITHUB_ENV
+#          echo ${{ env.VERSION }}
+
       - name: Build with Maven
         run: ./mvnw -B test
-
-      - name: Bump version
-        run: |
-          git config --global user.email "github+actions@gmail.com"
-          git config --global user.name "Actions"
-          git fetch --tags
-          wget -O - https://raw.githubusercontent.com/treeder/bump/master/gitbump.sh | bash
-        if: env.VERSION == ''
-
-      - name: get version tag after bump
-        uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get-bumped-tag
-        if: env.VERSION == ''
-
-      - name: get release version
-        run: |
-          echo "VERSION=${{ steps.get-bumped-tag.outputs.tag }}" >> $GITHUB_ENV
-          echo ${{ env.VERSION }}
-        if: env.VERSION == ''
 
       - name: Publish Pact Contract
         run: |
@@ -155,7 +145,7 @@ jobs:
           --environment=okteto 
           --pacticipant=cloud-application \
           --version=${{ env.VERSION }} \
-          --broker-base-url=${{ env.PACTFLOW_URL }} 
+          --broker-base-url=${{ env.PACTFLOW_URL }} \
           --broker-token=${{ env.PACTFLOW_TOKEN }}
 
       - name: Create Pact Deployment Record
@@ -165,5 +155,5 @@ jobs:
           --environment=okteto 
           --pacticipant=cloud-application \
           --version=${{ env.VERSION }} \
-          --broker-base-url=${{ env.PACTFLOW_URL }} 
+          --broker-base-url=${{ env.PACTFLOW_URL }} \
           --broker-token=${{ env.PACTFLOW_TOKEN }}
