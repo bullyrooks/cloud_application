@@ -15,4 +15,5 @@ public class MessageResponseDTO {
 
     private String message;
     private Instant generatedDate;
+    private String source;
 }
