@@ -105,5 +105,6 @@ public class MessageGeneratorClientTest {
     public void generateMessage() {
         MessageResponseDTO response = messageGeneratorClient.getMessage();
         assertTrue(StringUtils.isNotBlank(response.getMessage()));
+        assertTrue(null != response.getGeneratedDate());
     }
 }
