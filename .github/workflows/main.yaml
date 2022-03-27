@@ -8,6 +8,7 @@ on:
 env:
   PACTFLOW_URL: https://bullyrooks.pactflow.io
   PACTFLOW_TOKEN: ${{secrets.PACTFLOW_TOKEN}}
+  GH_TOKEN: ${{secrets.CHART_TOKEN}}
 
 jobs:
   build:
@@ -23,6 +24,13 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           cache: maven
+
+      - name: setup semantic-release
+        run: npm install -g semantic-release @semantic-release/git @semantic-release/changelog -D
+
+      - name: release
+        run: npx semantic-release
+
       - name: find current version
         uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
@@ -35,15 +43,6 @@ jobs:
       - name: Echo current version tag
         run: |
           echo $VERSION
-          echo ${{ env.VERSION }}
-
-      - name: Bump version
-        run: |
-          git config --global user.email "github+actions@gmail.com"
-          git config --global user.name "Actions"
-          git fetch --tags
-          wget -O - https://raw.githubusercontent.com/treeder/bump/master/gitbump.sh | bash
-          echo "VERSION=$(git tag --sort=-v:refname --list "v[0-9]*" | head -n 1 | cut -c 2-)" >> $GITHUB_ENV
           echo ${{ env.VERSION }}
 
       - name: Build with Maven
