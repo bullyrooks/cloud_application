@@ -42,11 +42,6 @@ spec:
             value: {{ include "cloud-application.fullname" . }}
           - name: OTEL_EXPORTER_OTLP_ENDPOINT
             value: "http://logzio-otel-traces:4317"
-          - name: SPRING_DATA_MONGODB_URI
-            valueFrom:
-              secretKeyRef:
-                name: mongo-secrets
-                key: SPRING_DATA_MONGODB_URI
           - name: LOGZIO_LOGGER_TOKEN
             valueFrom:
               secretKeyRef:
