@@ -1,6 +1,7 @@
 name: Cloud Application Main Branch Build
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
