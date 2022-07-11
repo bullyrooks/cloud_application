@@ -34,7 +34,7 @@ management:
       show-details: always
       group:
         readiness:
-          include: "readinessState,messageGenerator"
+          include: "readinessState"
     metrics:
       enabled: true
 
