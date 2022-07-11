@@ -34,9 +34,6 @@ import static org.springframework.util.StreamUtils.copyToString;
 public class MessageControllerResiliencyTest {
 
     @Autowired
-    MessageGeneratorClient messageGeneratorClient;
-
-    @Autowired
     MessageService messageService;
 
     @Test
@@ -44,6 +41,7 @@ public class MessageControllerResiliencyTest {
         stubFor(WireMock.get(WireMock.urlEqualTo("/message"))
                 .willReturn(WireMock.aResponse()
                         .withStatus(HttpStatus.OK.value())
+                        .withFixedDelay(100)
                         .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
                         .withBody(
                                 copyToString(
@@ -51,7 +49,9 @@ public class MessageControllerResiliencyTest {
                                                 .getClassLoader()
                                                 .getResourceAsStream("json/message-generator-response.json"),
                                         defaultCharset()))));
-        String response =messageGeneratorClient.getMessage().getMessage();
+        String response =messageService.getMessageFromMessageGeneratorService(
+                MessageModel.builder()
+                        .build()).getMessage();
         assertFalse(response.isEmpty());
     }
 
