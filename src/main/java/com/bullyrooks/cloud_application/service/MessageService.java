@@ -2,10 +2,12 @@ package com.bullyrooks.cloud_application.service;
 
 import com.bullyrooks.cloud_application.config.LoggingEnabled;
 import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorClient;
+import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorFallback;
 import com.bullyrooks.cloud_application.message_generator.client.dto.MessageResponseDTO;
 import com.bullyrooks.cloud_application.message_generator.mapper.MessageGeneratorMapper;
 import com.bullyrooks.cloud_application.messaging.mapper.MessageEventMapper;
 import com.bullyrooks.cloud_application.service.model.MessageModel;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,8 @@ public class MessageService {
     Counter genMsgCount;
     Counter genMsgSuccess;
     Counter messageSaved;
+
+    private static final String MESSAGE_GENERATOR_SERVICE = "messageGenerator";
 
     @Autowired
     public MessageService(MessageGeneratorClient messageGeneratorClient,
@@ -60,13 +64,7 @@ public class MessageService {
 
         msgCount.increment();
         if (StringUtils.isEmpty(messageModel.getMessage())) {
-
-            genMsgCount.increment();
-            log.info("No message, retrieve from message generator");
-            MessageResponseDTO dto = messageGeneratorClient.getMessage();
-            messageModel = MessageGeneratorMapper.INSTANCE.messageResponseToMessage(messageModel, dto);
-            genMsgSuccess.increment();
-            log.info("retrieved message: {}", messageModel.getMessage());
+            messageModel = getMessageFromMessageGeneratorService(messageModel);
         } else {
             //if they provided a message, return now
             messageModel.setGeneratedDate(Instant.now());
@@ -76,5 +74,20 @@ public class MessageService {
         streamBridge.send("message.created",
                 MessageEventMapper.INSTANCE.modelToEvent(messageModel));
         return messageModel;
+    }
+
+    @Retry(name = MESSAGE_GENERATOR_SERVICE, fallbackMethod = "messageGeneratorFallback")
+    public MessageModel getMessageFromMessageGeneratorService(MessageModel messageModel){
+        genMsgCount.increment();
+        log.info("No message, retrieve from message generator");
+        MessageResponseDTO dto = messageGeneratorClient.getMessage();
+        messageModel = MessageGeneratorMapper.INSTANCE.messageResponseToMessage(messageModel, dto);
+        genMsgSuccess.increment();
+        log.info("retrieved message: {}", messageModel.getMessage());
+        return messageModel;
+    }
+
+    public MessageModel messageGeneratorFallback(MessageModel messageModel, Throwable t){
+        return MessageGeneratorFallback.getMessage();
     }
 }

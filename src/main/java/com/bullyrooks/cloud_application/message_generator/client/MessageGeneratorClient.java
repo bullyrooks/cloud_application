@@ -5,8 +5,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@FeignClient(name = "message-generator")
+@FeignClient(name = "message-generator", url = "${message-generator.client.url}")
 public interface MessageGeneratorClient {
+
+    String MESSAGE_GENERATOR_SERVICE = "message-generator";
+
+
     @GetMapping(value = "/message",
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
