@@ -1,19 +1,14 @@
 package com.bullyrooks.cloud_application.controller;
 
-import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorClient;
 import com.bullyrooks.cloud_application.message_generator.client.MessageGeneratorFallback;
 import com.bullyrooks.cloud_application.service.MessageService;
 import com.bullyrooks.cloud_application.service.model.MessageModel;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
-import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
