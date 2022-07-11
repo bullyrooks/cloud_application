@@ -50,7 +50,7 @@ feign:
         readTimeout: 1000
 message-generator:
   client:
-    url: message-generator
+    url:
 logging:
   level:
     root: INFO
