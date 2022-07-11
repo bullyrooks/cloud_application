@@ -5,6 +5,9 @@ spring:
     serialization:
       write-dates-as-timestamps: false
   cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false
     stream:
       function:
         bindings:
@@ -38,10 +41,16 @@ management:
 feign:
   client:
     config:
+      message-generator:
+        connectTimeout: 1000
+        readTimeout: 1000
+        loggerLevel: basic
       healthClient:
         connectTimeout: 1000
         readTimeout: 1000
-
+message-generator:
+  client:
+    url: message-generator
 logging:
   level:
     root: INFO
@@ -52,3 +61,10 @@ logzio:
     url: https://listener.logz.io:8053
     registry:
       mock: false
+
+resilience4j:
+  retry:
+    instances:
+      message-generator:
+        maxRetryAttempts: 3
+        waitDuration: 200ms

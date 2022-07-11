@@ -9,3 +9,6 @@ spring:
       bindings:
         messageEvent-out-0:
           destination: message.created
+message-generator:
+  client:
+    url: localhost:9561
