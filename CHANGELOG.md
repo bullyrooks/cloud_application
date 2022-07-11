@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+# [1.2.0](https://github.com/bullyrooks/cloud_application/compare/v1.1.1...v1.2.0) (2022-07-11)
+
+
+### Features
+
+* Resilence4j ([#42](https://github.com/bullyrooks/cloud_application/issues/42)) ([f9bd52e](https://github.com/bullyrooks/cloud_application/commit/f9bd52e2fdb029282a4025910d5bbcc26378d256))
+
 ## [1.1.1](https://github.com/bullyrooks/cloud_application/compare/v1.1.0...v1.1.1) (2022-03-27)
 
 
