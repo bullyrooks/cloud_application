@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+# [1.3.0](https://github.com/bullyrooks/cloud_application/compare/v1.2.0...v1.3.0) (2022-07-12)
+
+
+### Features
+
+* openfeign retry and fallback ([d47b42f](https://github.com/bullyrooks/cloud_application/commit/d47b42f6ef716bc212e8aa222bb094788e5d4428))
+
 # [1.2.0](https://github.com/bullyrooks/cloud_application/compare/v1.1.1...v1.2.0) (2022-07-11)
 
 
