@@ -60,9 +60,8 @@ logging:
     io.micrometer.logzio: WARN
 logzio:
   metrics:
-    url: https://listener.logz.io:8053
     registry:
-      mock: false
+      mock: true
 
 #resilience4j:
 #  instances:

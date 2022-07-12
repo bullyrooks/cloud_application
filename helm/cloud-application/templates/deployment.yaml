@@ -40,18 +40,11 @@ spec:
           env:
           - name: OTEL_SERVICE_NAME
             value: {{ include "cloud-application.fullname" . }}
-          - name: OTEL_EXPORTER_OTLP_ENDPOINT
-            value: "http://logzio-otel-traces:4317"
           - name: LOGZIO_LOGGER_TOKEN
             valueFrom:
               secretKeyRef:
                 name: logzio-secrets
                 key: LOGZIO_LOGGER_TOKEN
-          - name: LOGZIO_METRICS_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: logzio-secrets
-                key: LOGZIO_METRICS_TOKEN
           - name: SPRING_KAFKA_PROPERTIES_SASL_JAAS_CONFIG
             valueFrom:
               secretKeyRef:
