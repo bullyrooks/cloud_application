@@ -39,6 +39,8 @@ management:
       enabled: true
 
 feign:
+  circuitbreaker:
+    enabled: true
   client:
     config:
       message-generator:
@@ -62,9 +64,12 @@ logzio:
     registry:
       mock: false
 
-resilience4j:
-  retry:
-    instances:
-      message-generator:
-        maxRetryAttempts: 3
-        waitDuration: 200ms
+#resilience4j:
+#  instances:
+#      message-generator:
+#        timeoutDuration: 3s
+#  retry:
+#    instances:
+#      message-generator:
+#        maxRetryAttempts: 3
+#        waitDuration: 200ms

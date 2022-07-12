@@ -8,6 +8,7 @@ import com.bullyrooks.cloud_application.message_generator.mapper.MessageGenerato
 import com.bullyrooks.cloud_application.messaging.mapper.MessageEventMapper;
 import com.bullyrooks.cloud_application.service.model.MessageModel;
 import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
@@ -23,21 +24,19 @@ import java.time.Instant;
 @LoggingEnabled
 public class MessageService {
 
+    private static final String MESSAGE_GENERATOR_SERVICE = "messageGenerator";
     MessageGeneratorClient messageGeneratorClient;
     MeterRegistry logzioMeterRegistry;
     StreamBridge streamBridge;
-
     Counter msgCount;
     Counter genMsgCount;
     Counter genMsgSuccess;
     Counter messageSaved;
 
-    private static final String MESSAGE_GENERATOR_SERVICE = "messageGenerator";
-
     @Autowired
     public MessageService(MessageGeneratorClient messageGeneratorClient,
                           StreamBridge streamBridge,
-                          MeterRegistry logzioMeterRegistry){
+                          MeterRegistry logzioMeterRegistry) {
         this.messageGeneratorClient = messageGeneratorClient;
         this.streamBridge = streamBridge;
         this.logzioMeterRegistry = logzioMeterRegistry;
@@ -45,7 +44,7 @@ public class MessageService {
     }
 
     private void initCounters() {
-        msgCount= Counter.builder("message.request.count")
+        msgCount = Counter.builder("message.request.count")
                 .description("Number of message requests received by the service")
                 .register(logzioMeterRegistry);
         genMsgCount = Counter.builder("message.generated.request.count")
@@ -76,8 +75,7 @@ public class MessageService {
         return messageModel;
     }
 
-    @Retry(name = MESSAGE_GENERATOR_SERVICE, fallbackMethod = "messageGeneratorFallback")
-    public MessageModel getMessageFromMessageGeneratorService(MessageModel messageModel){
+    public MessageModel getMessageFromMessageGeneratorService(MessageModel messageModel) {
         genMsgCount.increment();
         log.info("No message, retrieve from message generator");
         MessageResponseDTO dto = messageGeneratorClient.getMessage();
@@ -87,7 +85,4 @@ public class MessageService {
         return messageModel;
     }
 
-    public MessageModel messageGeneratorFallback(MessageModel messageModel, Throwable t){
-        return MessageGeneratorFallback.getMessage();
-    }
 }

@@ -5,7 +5,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@FeignClient(name = "message-generator", url = "${message-generator.client.url:#{null}}")
+@FeignClient(name = "message-generator",
+        configuration = MessageGeneratorClientConfig.class,
+        url = "${message-generator.client.url:#{null}}",
+        fallback = MessageGeneratorClientFallback.class)
 public interface MessageGeneratorClient {
 
     String MESSAGE_GENERATOR_SERVICE = "message-generator";
