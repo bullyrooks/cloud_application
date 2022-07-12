@@ -1,5 +1,12 @@
 # Semantic Versioning Changelog
 
+# [1.4.0](https://github.com/bullyrooks/cloud_application/compare/v1.3.0...v1.4.0) (2022-07-12)
+
+
+### Features
+
+* remove logzio tracing and metrics ([493f7af](https://github.com/bullyrooks/cloud_application/commit/493f7afe719f1d5e73b9a0842ba04ac65bbdee8a))
+
 # [1.3.0](https://github.com/bullyrooks/cloud_application/compare/v1.2.0...v1.3.0) (2022-07-12)
 
 
