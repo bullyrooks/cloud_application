@@ -18,7 +18,7 @@
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <javafaker.version>1.0.2</javafaker.version>
         <spring-cloud.version>2021.0.1</spring-cloud.version>
-        <logstash-logback-encoder.version>7.0.1</logstash-logback-encoder.version>
+        <logstash-logback-encoder.version>7.2</logstash-logback-encoder.version>
         <log4j2.version>2.17.1</log4j2.version>
         <logzio-logback-appender.version>v1.0.25</logzio-logback-appender.version>
         <micrometer-registry-logzio.version>1.0.2</micrometer-registry-logzio.version>
