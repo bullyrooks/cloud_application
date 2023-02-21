@@ -127,7 +127,7 @@ jobs:
 
 
       - name: Deploy
-        uses: WyriHaximus/github-action-helm3@v2
+        uses: WyriHaximus/github-action-helm3@v3
         with:
           exec: |
             helm repo add bullyrooks https://bullyrooks.github.io/helm-charts/
