@@ -23,7 +23,7 @@
         <logzio-logback-appender.version>v1.0.25</logzio-logback-appender.version>
         <micrometer-registry-logzio.version>1.0.2</micrometer-registry-logzio.version>
         <pact.version>4.0.10</pact.version>
-        <pact.provider.maven.plugin>4.3.5</pact.provider.maven.plugin>
+        <pact.provider.maven.plugin>4.5.3</pact.provider.maven.plugin>
         <resilience4j-spring-boot2.version>1.7.0</resilience4j-spring-boot2.version>
         <wiremock.version>2.27.2</wiremock.version>
     </properties>
